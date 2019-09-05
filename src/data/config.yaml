@@ -1,0 +1,18 @@
+# --- config.yaml --- 
+#
+# This file is read and parsed by main.py at launch. This is a YAML file.
+# 
+# Variables:
+# - program_name: a string. Name showed in the window title;
+# - screen_size: a list containing two integers. Size of the window in pixels;
+# - flush_color: a list containing three integers. An RGB color with which the 
+#   screen is filled at refresh;
+# - frame_rate: an integer. Target frame rate at which the program will run;
+# - first_scene: a string. Name of the first scene loaded.
+#
+---
+# program_name: ''
+# screen_size: [w, h] 
+# flush_color: [r, g, b]
+# frame_rate: 
+# first_scene: ''

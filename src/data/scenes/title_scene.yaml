@@ -1,0 +1,8 @@
+---
+- name : 'GameObject'
+  spawned : true
+  components :
+    - type: !!python/name:components.Transform
+      absolute: true
+      x : 0
+      y : 0
