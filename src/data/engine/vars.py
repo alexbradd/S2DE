@@ -24,7 +24,7 @@ All the values will be initialized by the main function at game init.
 - CONFIG_PATH: Path object (see docs for pathlib for path) containing the path
   to the 'config.yaml' file (one of the files inside the GAME_PATH)
 """
-PROGRAM_NAME = 'SE2DE Game'
+PROGRAM_NAME = 'S2DE Game'
 RUNNING = True
 
 SCREEN_SIZE = (600, 400)
