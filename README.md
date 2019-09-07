@@ -4,9 +4,15 @@ top of the pygame library.  It's structure resembles that of the Unity3D game
 engine, from which borrows many terms and concepts such as GameObject, 
 Component, Behaviour and Scene.
 
-In S2DE the event system is the most important component because everything 
-is moved by events. A diagram of the flow of said events can be found in
-`docs/program-flowchart.png`.
+S2DE is 'event-driven', meaning that event system is the most important component: 
+everything is moved by events.
+
+The engine follows the KISS principle: it contains only the basic components, 
+it is the task of the user to extend it by adding new Components or even 
+expanding the core engine and fit it to their need. That's why 'simple' is in 
+the name. 
+
+To ease its extension, I provided some utilities, stored in the `utils` folder.
 
 ## Features
 - Small, lightweight and portable;
