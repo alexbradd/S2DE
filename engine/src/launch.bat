@@ -1,2 +1,2 @@
 @ECHO OFF
-python %dp\data\main.py
+py "%~dp0\data\main.py"
