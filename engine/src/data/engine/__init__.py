@@ -9,6 +9,10 @@ Package containing all the logic to make the game work. This includes:
 
 For more in depth documentation, read the docs for each of the
 module/subpackage.
+
+For easier access, all important classes have been exposed and won't require
+typing their module. For example, to use the GameObject class you can write
+'engine.GameObject' instead of 'engine.gameobject.GameObject'
 """
 
 # Modules
