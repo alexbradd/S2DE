@@ -29,3 +29,9 @@ from engine.basecomponents import Component
 from engine.basecomponents import Behaviour
 from engine.gameobject import GameObject
 from engine.scene import Scene
+
+# Greet user pygame style
+VERSION = "0.1"
+URL = 'https://github.com/BreadyX/S2DE'
+print(f"Welcome and thank you for using S2DE v{VERSION}.""\n"
+      f"Check out the GitHub repo: {URL}")
