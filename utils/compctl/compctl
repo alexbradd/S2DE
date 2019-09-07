@@ -1,0 +1,155 @@
+#! /usr/bin/env python3
+"""
+Script that automates adding, removing and listing all components in S2DE
+"""
+from sys import argv
+import pathlib
+import os
+
+
+def print_help(typ):
+    """Print help dialog"""
+    print(f'Helping {typ}...')
+    raise SystemExit()
+
+
+def print_version():
+    """Print version dialog"""
+    print('Version...')
+
+
+def add(action_arguments):
+    """Add a component or behaviour to the engine"""
+    if len(action_arguments) != 3:
+        raise ValueError('Too few arguments passed to add')
+    if '--help' in action_arguments:
+        print_help('add')
+    paths = read_conf()
+    file_to_add = paths['components'].joinpath(action_arguments[1])
+    if not (action_arguments[0] == 'component' or
+            action_arguments[0] == 'behaviour'):
+        raise ValueError(f'Invalid type {action_arguments[0]}')
+    if not os.path.isfile(file_to_add):
+        raise ValueError(f'File {action_arguments[0]} '"isn't a valid file")
+    if not has_class(action_arguments[0], action_arguments[2], file_to_add):
+        raise ValueError(f'File {action_arguments[0]} '"doesn't define class "
+                         f'{action_arguments[1]}')
+    print(action_arguments)
+
+
+def has_class(typ, class_to_find, file):
+    """
+    Return True if file has a class declaration for class_to_find. If nothing
+    is found return false
+    """
+    with open(file, 'r') as opened_file:
+        while True:
+            line = opened_file.readline()
+            if line.find(f'class {class_to_find}({typ.title()}):') != -1:
+                return True
+            if not line:
+                return False
+
+
+def remove(action_arguments):
+    print(action_arguments)
+
+
+def list_action(action_arguments):
+    """List all components and behaviours"""
+    if '--help' in action_arguments:
+        print_help('add')
+    paths = read_conf()
+    components = create_list(paths['components_init'])
+    behaviours = create_list(paths['behaviours_init'])
+    print('Components:')
+    for component in components:
+        print(f'\tFile: {component[0]}\tClass: {component[1]}')
+    print('Behaviours:')
+    for behaviour in behaviours:
+        print(f'\tFile: {behaviour[0]}\tClass: {behaviour[1]}')
+
+
+def find_header(file):
+    """Find the compctl header in 'file'. If not found, add it at the end"""
+    compctl_header = '###! Managed by compctl !###'
+    with open(file, 'r+') as opened_file:
+        while True:
+            line = opened_file.readline()
+            if line.rstrip('\n') == compctl_header:
+                return opened_file.tell()
+            if not line:
+                opened_file.write(f'{compctl_header}\n')
+                return None
+
+
+def create_list(init):
+    """Create a list of tuples containing all added Components."""
+    components_list = []
+    header_pos = find_header(init)
+    if header_pos:
+        with open(init, 'r+') as file:
+            file.seek(header_pos)
+            for line in file:
+                splitted_line = line.rstrip('\n').split()
+                # if list_type = 'components':
+                #     # 0 from; 1 components.*; 2 import; 3 class
+                #     filename = splitted_line[1][11:-1] + '.py'
+                # else:
+                #     # 0 from; 1 behaviours.*; 2 import; 3 class
+                #     filename = splitted_line[1][11:-1] + '.py'
+                filename = splitted_line[1][11:-1] + '.py'
+                component = splitted_line[3]
+                components_list.append((filename, component))
+    return components_list
+
+
+def read_conf():
+    """Read ./compctl.conf and initialize global paths"""
+    engine_path = ''
+    components_path = ''
+    behaviours_path = ''
+    with open('./compctl.conf', 'r') as file:
+        for line in file:
+            splitted_line = line.rstrip('\n').split()
+            if splitted_line[0] == 'engine_path':
+                engine_path = pathlib.Path(splitted_line[1])
+            elif splitted_line[0] == 'components_path':
+                components_path = pathlib.Path(splitted_line[1])
+            elif splitted_line[0] == 'behaviours_path':
+                behaviours_path = pathlib.Path(splitted_line[1])
+            else:
+                raise KeyError(f'Invalid key {splitted_line[0]}')
+    components_init = engine_path.joinpath('data/components/__init__.py')
+    behaviours_init = engine_path.joinpath('data/behaviours/__init__.py')
+    return {'engine': engine_path, 'components_init': components_init,
+            'behaviours_init': behaviours_init, 'components': components_path,
+            'behaviours': behaviours_path}
+
+
+def main(action, action_arguments):
+    """
+    Main function. Evaluates action then delegates work to appropriate function
+    """
+    if action == 'add':
+        add(action_arguments)
+    elif action == 'remove':
+        remove(action_arguments)
+    elif action == 'list':
+        list_action(action_arguments)
+    elif action == '--help':
+        print_help('')
+    elif action == '--version':
+        print_version()
+    else:
+        raise ValueError(f'Invalid action {action}')
+
+
+if __name__ == '__main__':
+    try:
+        main(argv[1], argv[2:])
+    except IndexError:
+        print(f'Missing action. Plead consult the help dialog (--help option)')
+    except (ValueError, KeyError, FileNotFoundError) as error:
+        print(f'Encountered error: {error}. Please consult the help dialog '
+              '(--help option)')
