@@ -41,8 +41,7 @@ class Listener:
         key.
         If an equivalent Listener is not found, then a new one is created.
 
-        This behaviour can behaviour can be overridden by passing the force
-        flag.
+        This behaviour can be overridden by passing the force flag.
         """
         if isinstance(event_handler, EventHandler):
             if not force:
