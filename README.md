@@ -27,5 +27,5 @@ The repository contains two main folders:
 
 ## Installation
 Copy the contents of `engine/src` into the desired installation folder and run
-by run the `launch` program.
+by executing either `launch` (Linux and OSX) or `launch.bat` (Windows).
 
