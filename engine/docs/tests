@@ -1,0 +1,20 @@
+NAME
+    tests
+
+DESCRIPTION
+    Module containing some helper methods that help testing the engine without
+    the main loop running.
+    
+    Left kind of barren because this is a module that most likely the user will
+    expand to add his own tests.
+
+FUNCTIONS
+    create_dummy_go(name, spawn)
+        Create a dummy GameObject with name 'name'. This GameObject will have
+        only a Transform and the 'spawn' bool decides whether it will be spawned or
+        not.
+    
+    load_dummy_env()
+        Loads a dummy environment containing one Scene called 'Dummy' with one
+        spawned GameObject called 'Test1'
+

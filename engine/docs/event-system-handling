@@ -1,0 +1,56 @@
+NAME
+    engine.eventsys.handling - Module that contains the EventHandler and EventData class.
+
+CLASSES
+    builtins.object
+        EventData
+        EventHandler
+    
+    class EventData(builtins.object)
+     |  EventData(**kwargs)
+     |  
+     |  Class that is used by events to transfer all the data that they
+     |  need to give the EventHandlers.
+     |  
+     |  It doesn't have any fixed instance fields, instead each key value pair
+     |  passed to the constructor becomes one of the EventData's instance fields.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, **kwargs)
+     |      Constructor for EventData. Each kwarg passed will become an instance
+     |      field of the returned EventData.
+    
+    class EventHandler(builtins.object)
+     |  EventHandler(callback, *args, **kwargs)
+     |  
+     |  An EventHandler is a class that holds a callback (a reference to a
+     |  function) and the arguments (args or kwargs) that will be passed. The
+     |  function inside the EventHandler can be then executed.
+     |  
+     |  EventHandlers are used by Listeners to execute functions when an event
+     |  is launched.
+     |  
+     |  NOTE: Two EventHandlers are equal when the callback (the function) and its
+     |  arguments are equal. So two EventHandlers pointing to the same function
+     |  of two different instances of an object are different, but two
+     |  EventHandlers pointing to the same function of the same instance of an
+     |  object are equal.
+     |  
+     |  
+     |  __eq__(self, other)
+     |      Return true if callback and passed parameters are the same.
+     |  
+     |  __init__(self, callback, *args, **kwargs)
+     |      Constructor for EventHandler. It takes a function 'callback' and the
+     |      arguments to pass to it in form of args and kwargs. The self parameter
+     |      should not be added to the arguments of the callback.
+     |  
+     |  __str__(self)
+     |      Return a formatted string with the callback and its arguments.
+     |  
+     |  execute(self, event_data)
+     |      Execute the callback.
+     |      
+     |      If 'event_data' is None, it is not passed: only the args and kwargs
+     |      will be passed to the callback.

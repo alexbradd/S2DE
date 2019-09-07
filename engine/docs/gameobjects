@@ -1,0 +1,93 @@
+NAME
+    engine.gameobject
+
+DESCRIPTION
+    Module containing the GameObject class. For info on how a GameObject works,
+    check the docs for the engine.gameobject.GameObject class
+
+CLASSES
+    class GameObject(builtins.object)
+     |  GameObject(name=None, components=None)
+     |  
+     |  Useful docs to read for more information:
+     |  - scene_data_doc file in 'scenes' folder
+     |  - engine.eventsys package
+     |  
+     |  Everything in a Scene is a GameObject. A GameObject, in its essence, is
+     |  nothing more than a list of Components that define its behaviour. Those
+     |  Components are 'attached' to it.
+     |  
+     |  The main attributes of a GameObject are its name, it gobj_id and its
+     |  Components.
+     |  
+     |  Every GameObject has a lifecycle and the various steps of this cycle are
+     |  subscriptable events (the listener is the GameObjectEventListener). The
+     |  Component system, for example, uses them to provide an easy way to add
+     |  functionality to every step of a GameObject's lifecycle.
+     |  
+     |  The lifecycle of a GameObject:
+     |  - CREATE: The GameObject is created and is registered in the current Scene.
+     |    It is not yet spawned. The existence of the GameObject's components is
+     |    guaranteed, but not that of the other GameObject in the Scene.
+     |  - SPAWN: The GameObject begins to update itself every time the Scene
+     |    updates. The existence of all GameObjects and their components is
+     |    guaranteed.
+     |  - UPDATE: The GameObject updates itself every Scene update.
+     |  - DESPAWN: The GameObject stops updating itself, but is not yet destroyed.
+     |    The existence of all GameObjects and their components is guaranteed.
+     |  - DESTROY: Every Component is ripped out and the GameObject is deleted from
+     |    the current scene.
+     |  The SPAWN and DESPAWN steps may occur multiple times in a GameObject's
+     |  lifecycle.
+     |  
+     |  Components can be attached at scene load via the yaml files in the 'scenes'
+     |  folder. They can also be added and removed dynamically via
+     |  attach() and detach().
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name=None, components=None)
+     |      Constructor for GameObject. It initializes base attributes (name and
+     |      id) then attaches all Components and launches the CREATE event.
+     |  
+     |  __str__(self)
+     |      Return a string containing id and name of the GameObject.
+     |  
+     |  attach(self, to_attach)
+     |      Attach a list or a single component to the GameObject
+     |  
+     |  despawn(self)
+     |      Despawn the GameObject and launch the DESPAWN event
+     |  
+     |  destroy(self)
+     |      Launch DESTROY event, purge every Component and unregister from current
+     |      scene
+     |  
+     |  detach(self, to_detach, all_instances=False)
+     |      Detach the first instance of Components of type 'to_detach'.
+     |      
+     |      If 'all_instances' is True, remove every instance
+     |  
+     |  get_component(self, typ, all_instances=False)
+     |      Return the first instance of Component of type 'typ' attached to the
+     |      GameObject.
+     |      Return None if nothing is found.
+     |      
+     |      If 'all_instances' is True, return a list of every Component of type
+     |      'typ'
+     |  
+     |  spawn(self)
+     |      Spawn the GameObject and launch the SPAWN event
+     |  
+     |  update(self)
+     |      Update the GameObject by launching the UPDATE event
+     |  
+     |  ----------------------------------------------------------------------
+     |  Class methods defined here:
+     |  
+     |  find(search, all_instances=False) from builtins.type
+     |      Search the current scene for the GameObject with name or id 'search'
+     |      and return it. Return None if nothing is found.
+     |      
+     |      If 'all_instances' is True, return a list of every GameObject that
+     |      matches the criteria

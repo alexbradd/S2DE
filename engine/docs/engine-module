@@ -1,0 +1,23 @@
+NAME
+    engine
+
+DESCRIPTION
+    Package containing all the logic to make the game work. This includes:
+    - global variables (engine.vars);
+    - event system (engine.eventsys);
+    - scene system (engine.scene);
+    - scene loading (engine.scene_loader);
+    - gameobject system (engine.gameobject)
+    - component system (engine.basecomponents)
+    
+    For more in depth documentation, read the docs for each of the
+    module/subpackage.
+
+PACKAGE CONTENTS
+    basecomponents
+    eventsys (package)
+    gameobject
+    scene
+    sceneloader
+    vars
+

@@ -1,0 +1,33 @@
+NAME
+    engine.eventsys - Package that contains everything relative to the event system.
+
+DESCRIPTION
+    There are many types of events:
+    - GameEvents: Events launched by the main game loop that were in turn launched
+      by pygame. One example of such an event is MOUSEMOTION or QUIT;
+    - SceneEvents: Events launched by the scene class when a scene, for example, is
+      created (CREATE) or updated (UPDATE).
+    - GameObjectEvents: Events launched by GameObjects. This events are tied to the
+      id of the GameObject that launches them. This means that only certain
+      listeners will get the event. For more details consult the gameobject
+      module docs.
+    Many Listeners listen to one event of a certain type and get notified by the
+    event source when the event is launched. Every listener contains a EventHandler,
+    a callback to the function that it needs to execute.
+    There are many types of Listeners, one for each event type:
+    - Listener: base class for all Listeners. It should never be used;
+    - GameEventListener: listens to GameEvents;
+    - SceneEventListener: listens to SceneEvents;
+    - GameObjectEventListener: listens to GameObjectEvents;
+    Each event has a specific id referred to as 'type_id' in code. Each id can be
+    found inside the Listener corresponding to that event type, for example the id
+    for the scene CREATE event is found inside 'SceneEventListener.CREATE'.
+    
+    Each class in the package can be accessed without passing the name of the
+    module containing it: for example, to access the EventHandler class, you can
+    write 'engine.eventsys.EventHandler' or 'engine.events.SceneEventListener'.
+
+PACKAGE CONTENTS
+    handling
+    listeners
+    source

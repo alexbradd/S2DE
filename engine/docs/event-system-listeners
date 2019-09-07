@@ -1,0 +1,169 @@
+NAME
+    engine.eventsys.listeners - Module containing the various listener objects.
+
+CLASSES
+    Listener
+        GameEventListener
+        GameObjectEventListener
+        SceneEventListener
+    
+    class Listener(builtins.object)
+     |  Listener(event_handler, type_id, force=False)
+     |  
+     |  Base Listener object. It should never be used. Use one of its subclasses
+     |  instead.
+     |  
+     |  There cannot be more than one Listener with the same EventHandler listening
+     |  to the same source. As a matter of fact, at Listener creation, if another
+     |  Listener with the same EventHandler (for more detailed info on EventHandler
+     |  equality, see docs for the EventHandler class) is found listening to the
+     |  same source, that one is returned instead of creating a new one. This
+     |  behaviour can be overridden by passing the 'force' flag, but is not
+     |  recommended.
+     |  
+     |  Every Listener contains a static dictionary that maps a list of Listeners to
+     |  the ID of an event. When a Listener starts listening to the event it is
+     |  registered in the aforementioned dictionary and will be visible to the
+     |  sources. When the same Listener will stop listening, it will be removed from
+     |  the list.
+     |  ----------------------------------------------------------------------
+     |  Data and other attributes defined here:
+     |  
+     |  listeners = {}
+     |
+     |  ----------------------------------------------------------------------
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, event_handler, type_id, force=False)
+     |      Init for the Listener class. It takes in the 'event_handler'
+     |      object and the 'type_id' of the event to which the Listener will listen.
+     |  
+     |  ignore(self)
+     |      Stop listening to the event of type with id 'self.type_id'
+     |  
+     |  listen(self)
+     |      Listen for the event of type with id 'self.type_id'
+     |  
+     |  notify(self, event_data)
+     |      Execute the callback stored in 'self.event_handler' and pass to it
+     |      'event_data'
+     |  
+     |  ----------------------------------------------------------------------
+     |  Class methods defined here:
+     |  
+     |  find_listener(event_handler, type_id) from builtins.type
+     |      Get a Listener instance that has the same 'event_handler' from all the
+     |      listeners listening to event with 'type_id'.
+     |      If no Listener is found, return None.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Static methods defined here:
+     |  
+     |  __new__(cls, event_handler, type_id, force=False)
+     |      To avoid having multiple Listeners with the same EventHandler with
+     |      the same source_id, the function searches for a Listener with the
+     |      same EventHandler in the listeners dictionary using source_id as the
+     |      key.
+     |      If an equivalent Listener is not found, then a new one is created.
+     |      
+     |      This behaviour can be overridden by passing the force flag.
+     |  
+    
+    class GameEventListener(Listener)
+     |  GameEventListener(event_handler, type_id, force=False)
+     |  
+     |  Listener that listens to GameEvents.
+     |  
+     |  Method resolution order:
+     |      GameEventListener
+     |      Listener
+     |      builtins.object
+     |  
+     |  Data and other attributes defined here:
+     |  
+     |  ACTIVE = 5
+     |  
+     |  CLICKDOWN = 0
+     |  
+     |  CLICKUP = 1
+     |  
+     |  KEYDOWN = 3
+     |  
+     |  KEYUP = 4
+     |  
+     |  MOUSEMOTION = 2
+     |  
+     |  QUIT = 6
+     |  
+     |  listeners = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+     |  
+    
+    class SceneEventListener(Listener)
+     |  SceneEventListener(event_handler, type_id, force=False)
+     |  
+     |  Listener that listens to SceneEvents.
+     |  
+     |  Method resolution order:
+     |      SceneEventListener
+     |      Listener
+     |      builtins.object
+     |  
+     |  Data and other attributes defined here:
+     |  
+     |  ACTIVATE = 1
+     |  
+     |  DESTROY = 3
+     |  
+     |  UPDATE = 2
+     |  
+     |  listeners = {1: [], 2: [], 3: []}
+     |  
+
+    class GameObjectEventListener(Listener)
+     |  GameObjectEventListener(event_handler, type_id, gobj_id, force=False)
+     |  
+     |  Listener that listens to GameObjectEvents.
+     |  
+     |  The GameObjectEventListener, due to the special nature of the
+     |  GameObjectEvent, needs the GameObject ID of the GameObject that is tied to.
+     |  This makes each GameObjectEvent visible only to listeners that have the same
+     |  GameObject id as the source, not sharing said event with all listeners.
+     |  
+     |  Method resolution order:
+     |      GameObjectEventListener
+     |      Listener
+     |      builtins.object
+     |  
+     |  Data and other attributes defined here:
+     |  
+     |  CREATE = 0
+     |  
+     |  DESPAWN = 5
+     |  
+     |  DESTROY = 6
+     |  
+     |  SPAWN = 1
+     |  
+     |  UPDATE = 3
+     |  
+     |  listeners = {0: [], 1: [], 3: [], 5: [], 6: []}
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, event_handler, type_id, gobj_id, force=False)
+     |      Init for the Listener class. It takes in the 'event_handler'
+     |      object and the 'type_id' of the event to which the Listener will listen.
+     |  
+     |  ----------------------------------------------------------------------
+     |  Static methods defined here:
+     |  
+     |  __new__(cls, event_handler, type_id, gobj_id, force=False)
+     |      To avoid having multiple Listeners with the same EventHandler with
+     |      the same source_id, the function searches for a Listener with the
+     |      same EventHandler in the listeners dictionary using source_id as the
+     |      key.
+     |      If an equivalent Listener is not found, then a new one is created.
+     |      
+     |      This behaviour can be overridden by passing the force flag.
+     |  

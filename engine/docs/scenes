@@ -1,0 +1,72 @@
+NAME
+    engine.scene
+
+DESCRIPTION
+    Module containing the Scene class. For info on how a Scene works, check the
+    docs for the engine.scene.Scene class.
+
+CLASSES
+    class Scene(builtins.object)
+     |  Scene(name)
+     |  
+     |  Useful docs to read for more information:
+     |  - engine.eventsys package
+     |  - engine.gameobject module
+     |  
+     |  A Scene is basically what the game is displaying. It can be created,
+     |  activated, updated and destroyed. It holds a dictionary that maps each
+     |  loaded GameObject to its corresponding ID.
+     |  
+     |  Under the hood each scene does nothing but hold a reference to all the
+     |  currently created GameObjects and launch SceneEvents.
+     |  
+     |  External code should never interact directly with the scene system (calling
+     |  methods or instantiating a new Scene) but should use the SceneLoader and
+     |  the relative events as an interface.
+     |  
+     |  Life cycle of Scene more in depth:
+     |  - A deactivated Scene is created, but no event is launched.
+     |  - ACTIVATE: Scene is now considered active and can be updated. GameObject
+     |    are guaranteed to exist;
+     |  - UPDATE: Every GameObject in the Scene is updated. Update is called
+     |    directly by the main function at every game loop iteration;
+     |  - DESTROY: Scene is deactivated, ready to be replaced by a new one.
+     |  
+     |  Every step of the life cycle (except creation) is an event that other 
+     |  objects can listen to. The listener for these events is the 
+     |  SceneEventListener.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name)
+     |      Scene constructor. Create a new deactivated Scene with name 'name'
+     |      and 'gameobjects' gameobjects.
+     |  
+     |  __str__(self)
+     |      Return a string containing the name of the Scene and the status.
+     |  
+     |  activate(self)
+     |      Set the scene active and launches the ACTIVATE SceneEvent.
+     |  
+     |  destroy(self)
+     |      Deactivate the scene, unsubscribe from all events and launch the
+     |      DESTROY SceneEvent.
+     |  
+     |  gameobject_ids(self)
+     |      Return all registered gameobject ids
+     |  
+     |  gameobject_instances(self)
+     |      Return all registered gameobjects
+     |  
+     |  get_free_id(self)
+     |      Get a free id from the scene's GameObject map.
+     |  
+     |  register_gameobject(self, game_object)
+     |      Register 'game_object' in the scene's GameObject map
+     |  
+     |  unregister_gameobject(self, gameobject_id)
+     |      Unregister 'game_object' from the scene's GameObject map
+     |  
+     |  update(self)
+     |      Called directly by the main function. Launch the UPDATE SceneEvent if
+     |      the Scene is active.
