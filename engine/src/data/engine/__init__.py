@@ -9,6 +9,10 @@ Package containing all the logic to make the game work. This includes:
 
 For more in depth documentation, read the docs for each of the
 module/subpackage.
+
+For easier access, all important classes have been exposed and won't require
+typing their module. For example, to use the GameObject class you can write
+'engine.GameObject' instead of 'engine.gameobject.GameObject'
 """
 
 # Modules
@@ -25,3 +29,9 @@ from engine.basecomponents import Component
 from engine.basecomponents import Behaviour
 from engine.gameobject import GameObject
 from engine.scene import Scene
+
+# Greet user pygame style
+VERSION = "0.1"
+URL = 'https://github.com/BreadyX/S2DE'
+print(f"Welcome and thank you for using S2DE v{VERSION}.""\n"
+      f"Check out the GitHub repo: {URL}")

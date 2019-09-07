@@ -1,4 +1,4 @@
 #! /bin/sh -e
 
 # Launch main.py
-python ./data/main.py
+python "$(dirname "$0")/data/main.py"
