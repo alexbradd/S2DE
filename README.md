@@ -12,20 +12,12 @@ it is the task of the user to extend it by adding new Components or even
 expanding the core engine and fit it to their need. That's why 'simple' is in 
 the name. 
 
-To ease its extension, I provided some utilities, stored in the `utils` folder.
-
 ## Features
 - Small, lightweight and portable;
 - Powerful event system;
 - Useful abstractions such as Scenes and GameObjects;
 - Displaying, loading and caching Scenes from disk;
 - Extensibility through the addition of the user's own Components and Behaviours
-
-## Repository structure
-The repository contains two main folders:
-
-- `engine`: where the engine source (`src`) and docs (`docs`) live
-- `utils`: where some utilities to automate some processes live (like `compctl`)
 
 ## Requirements
 - Python 3
