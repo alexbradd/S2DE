@@ -26,9 +26,9 @@ class EventHandler:
         arguments to pass to it in form of args and kwargs. The self parameter
         should not be added to the arguments of the function.
         """
-        self.callback = callback
-        self.args = copy.deepcopy(args)
-        self.kwargs = copy.deepcopy(kwargs)
+        self._callback = callback
+        self._args = copy.deepcopy(args)
+        self._kwargs = copy.deepcopy(kwargs)
 
     def execute(self, event_data):
         """
@@ -38,24 +38,28 @@ class EventHandler:
         will be passed to the callback.
         """
         if event_data is None:
-            self.callback(*self.args, **self.kwargs)
+            self._callback(*self._args, **self._kwargs)
         else:
-            self.callback(event_data, *self.args, **self.kwargs)
+            self._callback(event_data, *self._args, **self._kwargs)
 
     def __eq__(self, other):
         """
         Return true if callback and passed parameters are the same.
         """
-        callback_eq = self.callback == other.callback
-        args_eq = self.args == other.args
-        kwargs_eq = self.kwargs == other.kwargs
+        callback_eq = self._callback == other._callback
+        args_eq = self._args == other._args
+        kwargs_eq = self._kwargs == other._kwargs
         return callback_eq and args_eq and kwargs_eq
+
+    def __hash__(self):
+        return hash((self._callback, tuple(self._args),
+                     tuple(self._kwargs.items())))
 
     def __str__(self):
         """
         Return a formatted string with the callback and its arguments.
         """
-        return f'EventHandler({self.callback}, {self.args}, {self.kwargs})'
+        return f'EventHandler({self._callback}, {self._args}, {self._kwargs})'
 
 
 class EventData:

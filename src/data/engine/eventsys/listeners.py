@@ -46,9 +46,8 @@ class Listener:
         if isinstance(event_handler, EventHandler):
             if not force:
                 listener = cls.find_listener(event_handler, type_id)
-                if listener is None:
-                    return object.__new__(cls)
-                return listener
+                if listener is not None:
+                    return listener
             return object.__new__(cls)
         raise TypeError(f'Passed argument {event_handler} is not an ' +
                         'EventHandler.')
@@ -62,17 +61,19 @@ class Listener:
 
     def listen(self):
         """Listen for the event of type with id 'self.type_id'"""
-        listener = self.find_listener(self.event_handler, self.type_id)
-        if listener is None or self.forced:
-            self.__class__.listeners[self.type_id].append(self)
+        # listener = self.find_listener(self.event_handler, self.type_id)
+        # if listener is None or self.forced:
+        #     self.__class__.listeners[self.type_id].append(self)
+        self.__class__.listeners[self.type_id].add(self)
 
     def ignore(self):
         """Stop listening to the event of type with id 'self.type_id'"""
         # Passing the reference to make the code more readable
-        listening_to_source = self.__class__.listeners[self.type_id]
-        for i, listener in enumerate(listening_to_source):
-            if listener == self:
-                del(listening_to_source[i])
+        # listening_to_source = self.__class__.listeners[self.type_id]
+        # for i, listener in enumerate(listening_to_source):
+        #     if listener == self:
+        #         del(listening_to_source[i])
+        self.__class__.listeners[self.type_id].discard(self)
 
     @classmethod
     def find_listener(cls, event_handler, type_id):
@@ -86,6 +87,15 @@ class Listener:
             if listener.event_handler == event_handler:
                 return listener
         return None
+
+    def __eq__(self, other):
+        eventh_eq = self.event_handler == other.event_handler
+        type_eq = self.type_id == other.type_id
+        forced_eq = self.forced == self.forced
+        return eventh_eq and type_eq and forced_eq
+
+    def __hash__(self):
+        return hash((self.event_handler, self.type_id, self.forced))
 
 
 class GameEventListener(Listener):
@@ -101,13 +111,13 @@ class GameEventListener(Listener):
     ACTIVE = 5
     QUIT = 6
 
-    listeners = {CLICKDOWN: [],
-                 CLICKUP: [],
-                 MOUSEMOTION: [],
-                 KEYDOWN: [],
-                 KEYUP: [],
-                 ACTIVE: [],
-                 QUIT: []}
+    listeners = {CLICKDOWN: set(),
+                 CLICKUP: set(),
+                 MOUSEMOTION: set(),
+                 KEYDOWN: set(),
+                 KEYUP: set(),
+                 ACTIVE: set(),
+                 QUIT: set()}
 
 
 class SceneEventListener(Listener):
@@ -118,10 +128,10 @@ class SceneEventListener(Listener):
     UPDATE = 2
     DESTROY = 3
 
-    listeners = { # CREATE: [],
-                 ACTIVATE: [],
-                 UPDATE: [],
-                 DESTROY: []}
+    listeners = {  # CREATE: [],
+        ACTIVATE: set(),
+        UPDATE: set(),
+        DESTROY: set()}
 
 
 class GameObjectEventListener(Listener):
@@ -140,11 +150,11 @@ class GameObjectEventListener(Listener):
     DESPAWN = 5
     DESTROY = 6
 
-    listeners = {CREATE: [],
-                 SPAWN: [],
-                 UPDATE: [],
-                 DESPAWN: [],
-                 DESTROY: []}
+    listeners = {CREATE: set(),
+                 SPAWN: set(),
+                 UPDATE: set(),
+                 DESPAWN: set(),
+                 DESTROY: set()}
 
     def __init__(self, event_handler, type_id, gobj_id, force=False):
         super().__init__(event_handler, type_id, force)
@@ -152,3 +162,12 @@ class GameObjectEventListener(Listener):
 
     def __new__(cls, event_handler, type_id, gobj_id, force=False):
         return super().__new__(cls, event_handler, type_id, force)
+
+    def __eq__(self, other):
+        super_eq = super().__eq__(other)
+        gobj_id_eq = self.gobj_id == other.gobj_id
+        return super_eq and gobj_id_eq
+
+    def __hash__(self):
+        return hash((self.event_handler, self.type_id, self.gobj_id,
+                     self.forced))
