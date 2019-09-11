@@ -24,6 +24,6 @@ the name.
 - See `requirements.txt`
 
 ## Installation
-Copy the contents of `engine/src` into the desired installation folder and run
+Copy the contents of `src` into the desired installation folder and run
 by executing either `launch` (Linux and OSX) or `launch.bat` (Windows).
 
