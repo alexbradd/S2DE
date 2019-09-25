@@ -4,8 +4,8 @@ function is called, else it has to be called manually.
 """
 from ruamel.yaml import YAML
 import pygame
-import pathlib
 import traceback
+import pathlib
 
 import engine
 
@@ -43,7 +43,7 @@ def init(main_path):
     engine.vars.SCENE_PATH = engine.vars.GAME_PATH.joinpath('scenes')
     engine.vars.SCREEN = pygame.display.set_mode(engine.vars.SCREEN_SIZE)
     engine.vars.CLOCK = pygame.time.Clock()
-    
+
     del_eh = engine.eventsys.EventHandler(engine.sceneloader.destroy_current)
     type_id = engine.eventsys.GameEventListener.QUIT
     engine.eventsys.GameEventListener(del_eh, type_id).listen()
@@ -126,8 +126,8 @@ def update():
         engine.vars.CLOCK.tick(engine.vars.FRAME_RATE)
     except AttributeError:
         return
-    
-    
+
+
 def quit():
     """Clean stuff up before exiting"""
     del_eh = engine.eventsys.EventHandler(engine.sceneloader.destroy_current)
